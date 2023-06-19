@@ -1,5 +1,5 @@
-import cors from "cors";
-import express, { Express, NextFunction, Request, Response } from "express";
+import cors from 'cors';
+import express, { Express, NextFunction, Request, Response } from 'express';
 
 // process.env.PWD = process.cwd();
 
@@ -15,6 +15,6 @@ app.use(express.json());
 
 // TODO: add HTTP request logger middleware (morgan)
 
-app.get("/health-check", async (req, res) => {
-  res.status(200).send("Congratulations! API is working!");
+app.get('/health-check', async (req, res) => {
+  res.status(200).send('Congratulations! API is working!');
 });

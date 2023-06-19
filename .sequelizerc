@@ -1,10 +1,10 @@
 // .sequelizerc
 
-const path = require("path");
+const path = require('path');
 
 module.exports = {
-  config: path.resolve("src/config", "sequelize.config.json"),
-  "models-path": path.resolve(".sequelize", "models"),
-  "seeders-path": path.resolve(".sequelize", "seeders"),
-  "migrations-path": path.resolve(".sequelize", "migrations"),
+  config: path.resolve('.', 'sequelize.config.json'),
+  'models-path': path.resolve('dist/db', 'models'),
+  'seeders-path': path.resolve('dist/db', 'seeders'),
+  'migrations-path': path.resolve('dist/db', 'migrations')
 };
