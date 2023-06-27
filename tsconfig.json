@@ -4,7 +4,6 @@
     "outDir": "dist",
     "module": "commonjs",
     "esModuleInterop": true,
-    "target": "es6",
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "allowJs": true,
@@ -23,5 +22,5 @@
   "skipLibCheck": true,
   "esModuleInterop": true,
   "include": ["src/**/*.ts", "src/**/*.js"],
-  "exclude": ["node_modules", "build", "__tests__", "coverage"]
+  "exclude": ["node_modules", "build", "dist", "__tests__", "coverage"]
 }
