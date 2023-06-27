@@ -1,21 +1,27 @@
 {
-    "compilerOptions": {
-        "rootDir": "src",
-        "outDir": "dist",
-        "module": "commonjs",
-        "esModuleInterop": true,
-        "target": "es6",
-        "moduleResolution": "node",
-        "resolveJsonModule": true,
-        "allowJs": true,
-        "sourceMap": false,
-        "noImplicitAny": false,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
-        "skipLibCheck": true,
-        "typeRoots": ["src/@types", "node_modules/@types/"]
-    },
-    "lib": ["es2015"],
-    "include": ["src/**/*.ts", "src/**/*.js"],
-    "exclude": ["node_modules", "build", "__tests__", "coverage"]
+  "compilerOptions": {
+    "rootDir": "src",
+    "outDir": "dist",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es6",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "sourceMap": false,
+    "noImplicitAny": false,
+    "preserveConstEnums": true,
+    "forceConsistentCasingInFileNames": true,
+    "strictNullChecks": false,
+    "strictPropertyInitialization": false,
+    "skipLibCheck": true,
+    "typeRoots": ["src/@types", "node_modules/@types/"]
+  },
+  "strict": true,
+  "target": "ES2021",
+  "lib": ["ES2021"],
+  "skipLibCheck": true,
+  "esModuleInterop": true,
+  "include": ["src/**/*.ts", "src/**/*.js"],
+  "exclude": ["node_modules", "build", "__tests__", "coverage"]
 }

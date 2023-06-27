@@ -1,3 +1,4 @@
 export enum DBTableName {
-  User = 'User'
+  User = 'User',
+  Device = 'Device'
 }

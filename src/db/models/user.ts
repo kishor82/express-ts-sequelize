@@ -95,8 +95,5 @@ export const UserTable = (sequelize: Sequelize): ModelStatic<DBUserInstance> => 
       timestamps: true
     }
   );
-  (user as any).associate = ({ UserRole }) => {
-    user.hasMany(UserRole, { foreignKey: 'userID', as: 'userRoles' });
-  };
   return user;
 };
