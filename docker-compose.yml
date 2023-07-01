@@ -5,7 +5,7 @@ services:
     restart: always
     ports:
       - 5432:5432
-    container_name: bms_postgress_v2
+    container_name: app_db
     volumes:
       - pgdata:/var/lib/postgresql/data
     environment:

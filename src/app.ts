@@ -1,14 +1,10 @@
 import cors from 'cors';
-import express, { Express, NextFunction, Request, Response } from 'express';
+import express, { Express } from 'express';
 import routes from './routes';
-import { getClients } from './helpers/client';
-import { ClientName } from './constants';
 
 // process.env.PWD = process.cwd();
 
 export const app: Express = express();
-
-getClients([ClientName.PgClient]);
 
 // enable cors
 // options for cors middleware

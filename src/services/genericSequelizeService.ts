@@ -1,13 +1,13 @@
 import { Op } from 'sequelize';
 import { ClientName, DBTableName } from '../constants';
-import { BaseHandler, HandlerOptions } from './baseHandler';
+import { BaseService, HandlerOptions } from './baseService';
 
-export class GenericSequelizeHandler extends BaseHandler {
+export class GenericSequelizeService extends BaseService {
   private static defaultOptions: HandlerOptions = { clientNames: [ClientName.PgClient] };
   constructor(
     protected readonly tableName: DBTableName,
-    readonly className: string = `${GenericSequelizeHandler.name} (${tableName})`,
-    readonly options: HandlerOptions = GenericSequelizeHandler.defaultOptions
+    readonly className: string = `${GenericSequelizeService.name} (${tableName})`,
+    readonly options: HandlerOptions = GenericSequelizeService.defaultOptions
   ) {
     super(className, options);
   }
@@ -20,10 +20,7 @@ export class GenericSequelizeHandler extends BaseHandler {
 
     try {
       await this.init();
-      const row = await this.clients.PgClient.models()[this.tableName].findByPk(id, {
-        attributes: [],
-        include: ['id']
-      });
+      const row = await this.clients.PgClient.models()[this.tableName].findByPk(id);
       const res = row ? row.get({ plain: true }) : null;
       this.log.success(logName, { id: res?.id || null });
       return res;
@@ -39,12 +36,9 @@ export class GenericSequelizeHandler extends BaseHandler {
   public async list(filter): Promise<any> {
     const logName = this.getLogBase(this.list.name);
     this.log.start(logName);
-
     try {
       await this.init();
-
       const rows = await this.clients.PgClient.models()[this.tableName].findAll({});
-
       this.log.success(logName);
       return rows.map((row) => row.get({ plain: true }));
     } catch (err) {
@@ -56,16 +50,14 @@ export class GenericSequelizeHandler extends BaseHandler {
     }
   }
 
-  public async create<CreateInput, Response>(args: { input?: CreateInput }): Promise<Response> {
+  public async create<CreateInput, Response>(args: CreateInput): Promise<Response> {
     const logName = this.getLogBase(this.create.name);
     this.log.start(logName, { args });
-
-    const { input } = args;
 
     try {
       await this.init();
       const transaction = await this.clients.PgClient.transaction();
-      const row = await this.clients.PgClient.models()[this.tableName].create(input, { transaction });
+      const row = await this.clients.PgClient.models()[this.tableName].create(args, { transaction });
       const rowData = row.get({ plain: true });
       await this.clients.PgClient.commit();
       const res = row ? rowData : null;
@@ -80,13 +72,16 @@ export class GenericSequelizeHandler extends BaseHandler {
     }
   }
 
-  public async update<UpdateInput extends { id: string }, RecordType>(args: { input?: UpdateInput }): Promise<RecordType> {
+  public async update<UpdateInput extends { id: string }, RecordType>(args: UpdateInput): Promise<RecordType> {
     const logName = this.getLogBase(this.update.name);
     this.log.start(logName, { args });
-    const { input } = args;
+    const { id } = args;
     try {
       await this.init();
-      const [, row] = await this.clients.PgClient.models()[this.tableName].update(input, {
+      const [, row] = await this.clients.PgClient.models()[this.tableName].update(args, {
+        where: {
+          id
+        },
         returning: true
       });
       const res = row?.length ? row[0].get({ plain: true }) : null;

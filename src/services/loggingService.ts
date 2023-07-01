@@ -52,7 +52,6 @@ export class LoggingService {
   }
 
   info(msg: string, properties?: any) {
-    console.log('>>>>', process.env.LOG_LEVEL);
     if (process.env.LOG_LEVEL === LogLevel.Silent) {
       return;
     }

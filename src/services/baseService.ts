@@ -1,4 +1,4 @@
-import { LoggingService } from '../services';
+import { LoggingService } from '.';
 import { ClientName, Clients, Logging } from '../constants';
 import { getClients, closeClients } from '../helpers/client';
 
@@ -6,7 +6,7 @@ export type HandlerOptions = {
   clientNames?: ClientName[];
 };
 
-export class BaseHandler implements Logging {
+export class BaseService implements Logging {
   protected log: LoggingService;
 
   protected clientNames: ClientName[];
@@ -20,7 +20,7 @@ export class BaseHandler implements Logging {
 
   public getLogBase(functionName: string): string {
     if (!this.className) {
-      throw new Error(`${BaseHandler.name}::className must be defined`);
+      throw new Error(`${BaseService.name}::className must be defined`);
     }
 
     return `${this.className}::${functionName} -> `;

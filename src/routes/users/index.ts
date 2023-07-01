@@ -1,18 +1,26 @@
 import { Router, Request, Response } from 'express';
-import { GenericSequelizeHandler } from '../../handlers';
 import { DBTableName } from '../../constants';
+import { GenericController } from '../../controllers';
 
 const routes = Router();
 
-routes.get('/', async (req: Request, res: Response): Promise<void> => {
-  const UserHandler = new GenericSequelizeHandler(DBTableName.User);
+const userController = new GenericController(DBTableName.User);
 
-  const response = await UserHandler.list({});
+/**
+ * NOTE:
+ * Using an arrow function to maintain 'this' context when calling Controller's method
+ * Alternatively, you can use the bind method: routes.get('/', userController.getAll.bind(userController));
+ */
 
-  res.status(200).json({
-    msg: 'hello from get api',
-    response
-  });
-});
+routes
+  .route('/')
+  .get((req, res) => userController.getAll(req, res))
+  .post((req, res) => userController.create(req, res))
+  .put((req, res) => userController.update(req, res));
+
+routes
+  .route('/:id')
+  .get((req, res) => userController.getById(req, res))
+  .delete((req, res) => userController.delete(req, res));
 
 export default routes;
