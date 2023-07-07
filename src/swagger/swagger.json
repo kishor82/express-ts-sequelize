@@ -1,0 +1,170 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Express API",
+    "version": "1.0.0",
+    "description": "Swagger Documentation",
+    "contact": {
+      "email": "kishorrathva8298@gmail.com"
+    }
+  },
+  "basePath": "/api/v1",
+  "schemes": ["http", "https"],
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["User"],
+        "summary": "Create new user",
+        "description": "Create new user",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "authToken": []
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      },
+      "get": {
+        "tags": ["User"],
+        "summary": "Get all users",
+        "description": "List users with pagination",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "pageSize",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The number of items to skip before starting to collect the result set"
+          },
+          {
+            "in": "query",
+            "name": "pageNumber",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "The numbers of items to return"
+          },
+          {
+            "in": "query",
+            "name": "sortDirection",
+            "schema": {
+              "type": "string"
+            },
+            "description": "sort direction DESC or ASC"
+          },
+          {
+            "in": "query",
+            "name": "sortField",
+            "schema": {
+              "type": "string"
+            },
+            "description": "sort field"
+          },
+          {
+            "in": "query",
+            "name": "distinct",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "get distinct data"
+          }
+        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "authToken": []
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    },
+    "/users/{id}": {
+      "put": {
+        "tags": ["User"],
+        "summary": "Update user",
+        "description": "Update user with id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "user id that needs to be updated"
+          }
+        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "authToken": []
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      },
+      "get": {
+        "tags": ["User"],
+        "summary": "Get user",
+        "description": "Get user with id",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "user id that needs to be get"
+          }
+        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "security": [
+          {
+            "authToken": []
+          }
+        ],
+        "responses": {
+          "default": {
+            "schema": {
+              "type": "string"
+            },
+            "description": "Successful"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "authToken": {
+      "type": "apiKey",
+      "name": "authorization",
+      "in": "header"
+    }
+  }
+}

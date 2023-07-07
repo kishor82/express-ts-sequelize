@@ -3,7 +3,6 @@ lib/
 .build/
 node_modules/
 dist/
-.sequelize
 
 # Editors
 .idea
@@ -36,21 +35,10 @@ coverage
 
 # Env
 .husky/.env
+.env
 .env.*
 !.env.example
-!.env.sit
-!.env.qa
-!.env.main
-!.env.stg
 !.env.local
-sequelize.config.js
-
-# Serverless directories
-.serverless/
-.warmup/
-.webpack/
-.s3-local/
-version.txt
 
 *.d.ts
 
