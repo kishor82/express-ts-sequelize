@@ -1,4 +1,4 @@
-import { IncludeOptions, ModelStatic, Op, Order, WhereOptions } from 'sequelize';
+import { FindAttributeOptions, IncludeOptions, ModelStatic, Op, Order, WhereOptions } from 'sequelize';
 import { PgClient } from '../clients';
 import { DBTableName } from '../constants';
 import { isUndefined } from 'lodash';
@@ -125,6 +125,29 @@ export class SequelizeHelper {
     return include;
   }
 
+  public static toWhere<FilterableInput, RecordType>(filter: FilterableInput): WhereOptions<Partial<RecordType>> {
+    const transformedFilter = SequelizeHelper.composeWhere<FilterableInput, RecordType>(filter);
+    if (!transformedFilter[Op.and]?.length) delete transformedFilter[Op.and];
+    if (!transformedFilter[Op.or]?.length) delete transformedFilter[Op.or];
+
+    return transformedFilter;
+  }
+
+  public static toAttributes(db: PgClient, tableName: DBTableName, resolveInfo: []): FindAttributeOptions {
+    const minimumAttributes = ['id'];
+    if (!resolveInfo) return minimumAttributes;
+
+    const model = db.models()[tableName];
+    if (!model) throw new Error(`Couldn't find table ${tableName}`);
+    const requestedAttributes = [];
+    const modelAttributeKeys = SequelizeHelper.getModelAttributeKeys(model);
+
+    // console.log({ modelAttributeKeys });
+    return modelAttributeKeys;
+    // const attributes = modelAttributeKeys.filter((key) => requestedAttributes.includes(key));
+    // return attributes.length ? attributes : minimumAttributes;
+  }
+
   private static transformOperator(operator: FilterOperator): symbol {
     const transformedOperator = SequelizeHelper.operatorMap[operator];
     if (!transformedOperator) throw new Error(`Operator not found: ${operator}`);
@@ -153,7 +176,6 @@ export class SequelizeHelper {
     for (const [key, value] of filterEntries) {
       if (key === FilterOperator.AND || key === FilterOperator.OR) {
         for (const nestedValue of Object.values(value)) SequelizeHelper.composeWhere(nestedValue, transformedFilter, Op[key]);
-
         return transformedFilter;
       } else {
         const field = key;

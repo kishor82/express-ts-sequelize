@@ -1,6 +1,8 @@
 import { Op } from 'sequelize';
 import { ClientName, DBTableName } from '../constants';
 import { BaseService, HandlerOptions } from './baseService';
+import { SequelizeHelper, SortDirection, getExtraPaginationFields } from '../helpers';
+import { ListResponse } from '../common';
 
 export class GenericSequelizeService extends BaseService {
   private static defaultOptions: HandlerOptions = { clientNames: [ClientName.PgClient] };
@@ -33,14 +35,40 @@ export class GenericSequelizeService extends BaseService {
     }
   }
 
-  public async list(filter): Promise<any> {
+  public async list<ResponseRecordType, FilterableInput>(args: {
+    filter?: FilterableInput;
+    pageNumber?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortDirection?: SortDirection;
+    distinct?: boolean;
+  }): Promise<ListResponse<ResponseRecordType>> {
     const logName = this.getLogBase(this.list.name);
     this.log.start(logName);
+    const { filter, pageNumber, pageSize, sortField, sortDirection, distinct = false } = args;
     try {
       await this.init();
-      const rows = await this.clients.PgClient.models()[this.tableName].findAll({});
-      this.log.success(logName);
-      return rows.map((row) => row.get({ plain: true }));
+      const include = SequelizeHelper.toInclude(this.clients.PgClient, this.tableName, []);
+      const { rows, count } = await this.clients.PgClient.models()[this.tableName].findAndCountAll({
+        where: { ...SequelizeHelper.toWhere(filter) },
+        attributes: SequelizeHelper.toAttributes(this.clients.PgClient, this.tableName, []),
+        ...(include && include.length && { include }),
+        ...SequelizeHelper.toLimitAndOffset(pageNumber, pageSize),
+        ...SequelizeHelper.toSort(this.clients.PgClient, this.tableName, include, sortField, sortDirection),
+        distinct
+      });
+
+      const { totalPages, prevPage, nextPage } = getExtraPaginationFields(pageNumber, pageSize, count);
+      this.log.success(logName, { total: count });
+      return {
+        pageNumber,
+        pageSize,
+        total: count,
+        totalPages,
+        prevPage,
+        nextPage,
+        items: rows.map((row) => row.get({ plain: true }))
+      };
     } catch (err) {
       this.log.err(logName, err as Error);
       throw err;
