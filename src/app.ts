@@ -4,9 +4,11 @@ import routes from './routes';
 import fs from 'fs';
 import * as swaggerUi from 'swagger-ui-express';
 import { errorHandler } from './middleware';
+import { LoggingService } from './services';
 
 class App {
   public app: Express;
+  protected log: LoggingService;
 
   /* Swagger files start */
   private swaggerFile: any = process.cwd() + '/src/swagger/swagger.json';
@@ -18,6 +20,7 @@ class App {
     this.app = express();
     this.setupMiddleware();
     this.setupRoutes();
+    this.log = new LoggingService();
   }
 
   private setupMiddleware(): void {
@@ -61,8 +64,9 @@ class App {
   }
 
   public start(port: number): void {
+    // TODO: Use this method to start the server and enable incoming connections.
     this.app.listen(port, () => {
-      console.log(`Server is running on port ${port}`);
+      this.log.start(`App: Server is running on port ${port}`);
     });
   }
 }
