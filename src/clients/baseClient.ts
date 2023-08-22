@@ -7,7 +7,10 @@ export class BaseClient implements Logging {
 
   protected options: BaseClientOptions;
 
-  constructor(protected readonly className: string, options: BaseClientOptions = {}) {
+  constructor(
+    protected readonly className: string,
+    options: BaseClientOptions = {}
+  ) {
     this.log = new LoggingService();
     this.options = options;
   }

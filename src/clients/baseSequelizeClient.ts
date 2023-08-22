@@ -18,7 +18,10 @@ export class BaseSequelizeClient extends BaseClient {
 
   protected txn: Maybe<Transaction>;
 
-  constructor(protected readonly className: string, protected readonly options: BaseSequelizeClientOptions) {
+  constructor(
+    protected readonly className: string,
+    protected readonly options: BaseSequelizeClientOptions
+  ) {
     super(className, options);
   }
 
