@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "prepare": "npm run build",
+    "lint": "eslint . --ext .ts",
     "clean": "rimraf dist",
     "build": "yarn run clean && tsc",
     "db:seed:local": "yarn run build && NODE_ENV=local sequelize-cli db:seed:all",
