@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { format, transports, createLogger } from 'winston';
 import { LogLevel } from '../constants';
 import { getStage, isSandboxStage, isLocalStage } from '../helpers/env';
 import DailyRotateFile from 'winston-daily-rotate-file';
+import Sentry from 'winston-sentry';
 
 process.env.LOG_LEVEL = process.env.LOG_LEVEL || LogLevel.Info;
 let environmentPrinted = false;
@@ -11,19 +13,29 @@ const { combine, timestamp, prettyPrint, json } = format;
 const transport: DailyRotateFile = new DailyRotateFile({
   filename: 'application-%DATE%.log',
   datePattern: 'YYYY-MM-DD-HH',
+  dirname: 'logs',
   zippedArchive: true,
   maxSize: '20m',
   maxFiles: '14d'
 });
 
-transport.on('rotate', function (oldFilename, newFilename) {
-  // do something fun
-});
+// transport.on('rotate', function (_oldFilename, newFilename) {
+//   // do something fun
+// });
 
 const logger = createLogger({
   level: process.env.LOG_LEVEL,
   format: combine(timestamp(), prettyPrint(), json()),
-  transports: [new transports.Console(), transport]
+  transports: [
+    new transports.Console({ level: 'debug' }),
+    transport
+    // new Sentry({
+    //   level: 'warn',
+    //   dsn: '{{ YOUR SENTRY DSN }}', // TODO
+    //   tags: { key: 'value' },
+    //   extra: { key: 'value' }
+    // })
+  ]
 });
 
 export class LoggingService {

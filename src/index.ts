@@ -12,6 +12,7 @@ const server = http.createServer(app);
 
 server.listen(config.port, () => {
   const serverAddress = server.address();
+  console.log('started.....');
   // const host = serverAddress.address;
   // const port = serverAddress.port;
   log.start(`Listening to port ${config.port}`, {

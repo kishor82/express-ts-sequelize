@@ -1,0 +1,11 @@
+node_modules
+dist
+
+*.lock
+*.log
+*.test.ts
+
+.gitignore
+.prettierignore
+.DS_Store
+.eslintignore

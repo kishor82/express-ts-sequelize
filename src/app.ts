@@ -33,6 +33,7 @@ class App {
 
   private setupRoutes(): void {
     const BASE_PATH = '/api/v1';
+    debugger;
     this.app.use(BASE_PATH, routes);
 
     this.app.get('/health-check', async (req, res) => {
