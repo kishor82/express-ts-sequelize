@@ -11,6 +11,14 @@ services:
     environment:
       - POSTGRES_USER=local
       - POSTGRES_PASSWORD=evsbvFm3QR
-
+  sonarqube:
+    image: sonarqube:latest
+    restart: always
+    ports:
+      - 9000:9000
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+    stop_grace_period: 1h
 volumes:
   pgdata:
+  sonarqube_data:
