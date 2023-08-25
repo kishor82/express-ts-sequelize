@@ -106,5 +106,3 @@ To debug the application, you can use:
 ```sh
 yarn debug
 ```
-
-sqp_7e3c104e7a07264ef3e7700fe136f2d6b16929f6
